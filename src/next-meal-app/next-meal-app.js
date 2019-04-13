@@ -23,6 +23,7 @@ class NextMealApp extends PolymerElement {
           background-position: center;
           background-repeat: no-repeat;
           background-size: cover;
+          border: 8px solid #ffecb3;
           @apply --layout-center;
           @apply --layout-center-justified;
           @apply --layout-fit;
@@ -30,11 +31,21 @@ class NextMealApp extends PolymerElement {
         }
 
         .location {
+          background: #ffffe5;
           width: calc(100% - 16px);
+        }
+
+        .location__title {
+          color: #8d8d8d;
+        }
+
+        .location__input {
+          --paper-input-container-focus-color: #cbba83;
         }
 
         .location__checkbox {
           margin-top: 16px;
+          --paper-checkbox-checked-color: #cbba83;
         }
 
         @media only screen and (min-width: 640px) {
@@ -46,7 +57,8 @@ class NextMealApp extends PolymerElement {
 
       <paper-card class="location">
         <div class="card-content">
-          <paper-input label="Type your location">
+          <h2 class="location__title">Discover your Next Meal</h2>
+          <paper-input class="location__input" label="Type your location">
             <paper-icon-button
               class="location__button"
               disabled$="[[_noLocationSet]]"
@@ -56,7 +68,7 @@ class NextMealApp extends PolymerElement {
             ></paper-icon-button>
           </paper-input>
           <paper-checkbox checked class="location__checkbox"
-            >Remember me</paper-checkbox
+            >remember me</paper-checkbox
           >
         </div>
       </paper-card>
