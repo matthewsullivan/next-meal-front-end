@@ -1,0 +1,7 @@
+{
+  "name": "next-meal",
+  "short_name": "next-meal",
+  "description": "next meal helps you decide on where to eat next.",
+  "start_url": "/",
+  "display": "standalone"
+}
