@@ -22,6 +22,46 @@
 
     <script type="module" src="/src/next-meal-app/next-meal-app.js" crossorigin></script>
   </head>
+  <style>
+    .pac-container {
+      background-color: #ffffe5;
+      border-radius: 2px;
+      box-shadow: none;
+      border-top: none;
+      font-family: Roboto, sans-serif;
+    }
+
+    .hdpi.pac-logo:after {
+      background-image: none;
+      height: 0;
+    }
+    .hdpi .pac-icon,
+    .pac-icon {
+      background-image: none;
+    }
+    .pac-item {
+      color: #999;
+      cursor: pointer;
+      font-size: 14px;
+      height: 40px;
+      line-height: 40px;
+    }
+    .pac-item:hover {
+      background-color: #ffecb3;
+    }
+    .pac-item-selected,
+    .pac-item-selected:hover {
+      background-color: #ebf2fe;
+    }
+    .pac-matched {
+      font-weight: 700;
+    }
+    .pac-item-query {
+      color: #000;
+      font-size: 14px;
+    }
+   
+    
   </style>
   <body>
     <next-meal-app></next-meal-app>

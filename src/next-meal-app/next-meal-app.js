@@ -1,13 +1,15 @@
-import { html, PolymerElement } from "@polymer/polymer/polymer-element.js";
+import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 
-import "@polymer/iron-flex-layout/iron-flex-layout";
-import "@polymer/iron-icon/iron-icon";
-import "@polymer/iron-icons/iron-icons";
+import '@polymer/iron-flex-layout/iron-flex-layout';
+import '@polymer/iron-icon/iron-icon';
+import '@polymer/iron-icons/iron-icons';
 
-import "@polymer/paper-icon-button/paper-icon-button";
-import "@polymer/paper-card/paper-card";
-import "@polymer/paper-checkbox/paper-checkbox";
-import "@polymer/paper-input/paper-input";
+import '@polymer/paper-icon-button/paper-icon-button';
+import '@polymer/paper-card/paper-card';
+import '@polymer/paper-checkbox/paper-checkbox';
+import '@polymer/paper-input/paper-input';
+
+import 'paper-input-place';
 
 /**
  * @customElement
@@ -40,7 +42,17 @@ class NextMealApp extends PolymerElement {
         }
 
         .location__input {
+          display: block;
           --paper-input-container-focus-color: #cbba83;
+          --paper-input-place-postfix-icon-mixin: {
+            display: none;
+          }
+        }
+
+        .location__actions {
+          margin-top: 16px;
+          @apply --layout-horizontal;
+          @apply --layout-justified;
         }
 
         .location__checkbox {
@@ -58,38 +70,61 @@ class NextMealApp extends PolymerElement {
       <paper-card class="location">
         <div class="card-content">
           <h2 class="location__title">Discover your Next Meal</h2>
-          <paper-input class="location__input" label="Type your location">
+          <paper-input-place
+            api-key="AIzaSyDIzP6lts91F_1atFp9Kq0ygMDiGE8cI38"
+            class="location__input"
+            hide-error
+            hide-icon
+            label="Type your location"
+            value="{{location}}"
+          ></paper-input-place>
+          <div class="location__actions">
+            <paper-checkbox checked class="location__checkbox">
+              remember me
+            </paper-checkbox>
             <paper-icon-button
               class="location__button"
-              disabled$="[[_noLocationSet]]"
+              disabled$="[[noLocationSet]]"
               icon="icons:arrow-forward"
               on-tap="_handleLocationSubmit"
-              slot="suffix"
             ></paper-icon-button>
-          </paper-input>
-          <paper-checkbox checked class="location__checkbox"
-            >remember me</paper-checkbox
-          >
+          </div>
         </div>
       </paper-card>
     `;
   }
   static get properties() {
     return {
-      _noLocationSet: {
+      location: {
+        type: Object,
+        observer: '_locationChanged',
+      },
+      locationId: String,
+      noLocationSet: {
         type: Boolean,
-        value: true
-      }
+        value: true,
+      },
     };
   }
 
   /**
    * Handle Location Submit
-   * @param {objext} event
    */
-  _handleLocationSubmit(event) {
-    console.log(event);
+  _handleLocationSubmit() {}
+
+  /**
+   * Location Changed
+   */
+  _locationChanged() {
+    if (!this.location.place_id) {
+      this.noLocationSet = true;
+
+      return;
+    }
+
+    this.locationId = this.location.place_id;
+    this.noLocationSet = false;
   }
 }
 
-window.customElements.define("next-meal-app", NextMealApp);
+window.customElements.define('next-meal-app', NextMealApp);
