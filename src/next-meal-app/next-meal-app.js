@@ -109,9 +109,8 @@ class NextMealApp extends PolymerElement {
 
   /**
    * Handle Location Submit
-   * @param {object} event
    */
-  _handleLocationSubmit(event) {}
+  _handleLocationSubmit() {}
 
   /**
    * Location Changed
