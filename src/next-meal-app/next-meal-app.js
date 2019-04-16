@@ -117,7 +117,9 @@ class NextMealApp extends PolymerElement {
    * Location Changed
    */
   _locationChanged() {
-    if (!this.location.place_id || this.locationId) {
+    if (!this.location.place_id) {
+      this.noLocationSet = true;
+
       return;
     }
 
