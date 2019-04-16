@@ -49,6 +49,12 @@ class NextMealApp extends PolymerElement {
           }
         }
 
+        .location__actions {
+          margin-top: 16px;
+          @apply --layout-horizontal;
+          @apply --layout-justified;
+        }
+
         .location__checkbox {
           margin-top: 16px;
           --paper-checkbox-checked-color: #cbba83;
@@ -70,26 +76,31 @@ class NextMealApp extends PolymerElement {
             hide-error
             hide-icon
             label="Type your location"
-            value="{{tourstop.place}}"
-          >
+            value="{{location}}"
+          ></paper-input-place>
+          <div class="location__actions">
+            <paper-checkbox checked class="location__checkbox">
+              remember me
+            </paper-checkbox>
             <paper-icon-button
               class="location__button"
-              disabled$="[[_noLocationSet]]"
+              disabled$="[[noLocationSet]]"
               icon="icons:arrow-forward"
               on-tap="_handleLocationSubmit"
-              slot="suffix"
             ></paper-icon-button>
-          </paper-input-place>
-          <paper-checkbox checked class="location__checkbox">
-            remember me
-          </paper-checkbox>
+          </div>
         </div>
       </paper-card>
     `;
   }
   static get properties() {
     return {
-      _noLocationSet: {
+      location: {
+        type: Object,
+        observer: '_locationChanged',
+      },
+      locationId: String,
+      noLocationSet: {
         type: Boolean,
         value: true,
       },
@@ -98,10 +109,20 @@ class NextMealApp extends PolymerElement {
 
   /**
    * Handle Location Submit
-   * @param {objext} event
+   * @param {object} event
    */
-  _handleLocationSubmit(event) {
-    console.log(event);
+  _handleLocationSubmit(event) {}
+
+  /**
+   * Location Changed
+   */
+  _locationChanged() {
+    if (!this.location.place_id || this.locationId) {
+      return;
+    }
+
+    this.locationId = this.location.place_id;
+    this.noLocationSet = false;
   }
 }
 

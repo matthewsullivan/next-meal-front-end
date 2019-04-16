@@ -24,31 +24,30 @@
   </head>
   <style>
     .pac-container {
-      background-color: #fff;
-      position: absolute!important;
-      z-index: 1000;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
+      background-color: #ffffe5;
+      border-radius: 2px;
+      box-shadow: none;
+      border-top: none;
+      font-family: Roboto, sans-serif;
     }
 
-    .hdpi.pac-logo:after,
+    .hdpi.pac-logo:after {
+      background-image: none;
+      height: 0;
+    }
     .hdpi .pac-icon,
     .pac-icon {
       background-image: none;
     }
     .pac-item {
-      cursor: default;
-      padding: 0;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-      line-height: 30px;
-      text-align: left;
-      font-size: 12px;
       color: #999;
+      cursor: pointer;
+      font-size: 14px;
+      height: 40px;
+      line-height: 40px;
     }
     .pac-item:hover {
-      background-color: #fafafa;
+      background-color: #ffecb3;
     }
     .pac-item-selected,
     .pac-item-selected:hover {
@@ -58,9 +57,8 @@
       font-weight: 700;
     }
     .pac-item-query {
-      font-size: 13px;
-      padding-right: 3px;
       color: #000;
+      font-size: 14px;
     }
    
     
