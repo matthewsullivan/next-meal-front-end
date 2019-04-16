@@ -3,6 +3,7 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/iron-icons/iron-icons';
+import '@polymer/iron-pages/iron-pages';
 
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/paper-card/paper-card';
@@ -32,12 +33,13 @@ class NextMealApp extends PolymerElement {
           @apply --layout-vertical;
         }
 
-        .location {
+        .location .tag {
           background: #ffffe5;
           width: calc(100% - 16px);
         }
 
-        .location__title {
+        .location__title,
+        .tag__title {
           color: #8d8d8d;
         }
 
@@ -61,36 +63,48 @@ class NextMealApp extends PolymerElement {
         }
 
         @media only screen and (min-width: 640px) {
-          .location {
+          .location .tag {
             width: 40%;
           }
         }
       </style>
 
-      <paper-card class="location">
-        <div class="card-content">
-          <h2 class="location__title">Discover your Next Meal</h2>
-          <paper-input-place
-            api-key="AIzaSyDIzP6lts91F_1atFp9Kq0ygMDiGE8cI38"
-            class="location__input"
-            hide-error
-            hide-icon
-            label="Type your location"
-            value="{{location}}"
-          ></paper-input-place>
-          <div class="location__actions">
-            <paper-checkbox checked class="location__checkbox">
-              remember me
-            </paper-checkbox>
-            <paper-icon-button
-              class="location__button"
-              disabled$="[[noLocationSet]]"
-              icon="icons:arrow-forward"
-              on-tap="_handleLocationSubmit"
-            ></paper-icon-button>
+      <iron-pages id="pages" selected="{{stage}}">
+        <paper-card class="location">
+          <div class="card-content">
+            <h2 class="location__title">Discover your Next Meal</h2>
+            <paper-input-place
+              api-key="AIzaSyDIzP6lts91F_1atFp9Kq0ygMDiGE8cI38"
+              class="location__input"
+              hide-error
+              hide-icon
+              label="Type your location"
+              value="{{location}}"
+            ></paper-input-place>
+            <div class="location__actions">
+              <paper-checkbox
+                checked
+                class="location__checkbox"
+                id="rememberMe"
+              >
+                remember me
+              </paper-checkbox>
+              <paper-icon-button
+                class="location__button"
+                disabled$="[[noLocationSet]]"
+                icon="icons:arrow-forward"
+                on-tap="_handleLocationSubmit"
+              ></paper-icon-button>
+            </div>
           </div>
-        </div>
-      </paper-card>
+        </paper-card>
+
+        <paper-card class="tag">
+          <div class="card-content">
+            <h2 class="tag__title">Choose Tags</h2>
+          </div>
+        </paper-card>
+      </iron-pages>
     `;
   }
   static get properties() {
@@ -99,18 +113,40 @@ class NextMealApp extends PolymerElement {
         type: Object,
         observer: '_locationChanged',
       },
-      locationId: String,
       noLocationSet: {
         type: Boolean,
         value: true,
       },
+      stage: {
+        type: Number,
+        value: 0,
+      },
+      user: {
+        type: Object,
+        value: () => JSON.parse(localStorage.getItem('user')),
+      },
     };
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    if (this.user) {
+      this._handleLocationSubmit();
+    }
   }
 
   /**
    * Handle Location Submit
    */
-  _handleLocationSubmit() {}
+  _handleLocationSubmit() {
+    if (this.$.rememberMe.checked || !this.user.location) {
+      localStorage.setItem('user', JSON.stringify(this.user));
+    }
+
+    this.stage = 1;
+    this.$.pages.selectIndex(this.stage);
+  }
 
   /**
    * Location Changed
@@ -122,8 +158,8 @@ class NextMealApp extends PolymerElement {
       return;
     }
 
-    this.locationId = this.location.place_id;
     this.noLocationSet = false;
+    this.user = {location: this.location.place_id};
   }
 }
 
