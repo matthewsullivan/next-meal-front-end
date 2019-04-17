@@ -4,6 +4,7 @@
     "url": "https://github.com/matthewsullivan/next-meal/issues"
   },
   "dependencies": {
+    "@collaborne/paper-chip": "^3.0.5",
     "@polymer/app-layout": "^3.0.0-pre.18",
     "@polymer/app-route": "^3.0.0-pre.18",
     "@polymer/iron-ajax": "^3.0.0-pre.18",
