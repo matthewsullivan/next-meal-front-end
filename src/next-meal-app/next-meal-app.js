@@ -21,25 +21,29 @@ class NextMealApp extends PolymerElement {
     return html`
       <style>
         :host {
-          display: block;
           background: url(images/background.jpg);
           background-position: center;
           background-repeat: no-repeat;
           background-size: cover;
           border: 8px solid #ffecb3;
-          @apply --layout-center;
-          @apply --layout-center-justified;
           @apply --layout-fit;
+        }
+
+        .pages {
+          @apply --layout-center;
+          @apply --layout-fit;
+          @apply --layout-center-justified;
           @apply --layout-vertical;
         }
 
-        .location .tag {
+        .location,
+        .filter {
           background: #ffffe5;
           width: calc(100% - 16px);
         }
 
         .location__title,
-        .tag__title {
+        .filter__title {
           color: #8d8d8d;
         }
 
@@ -63,14 +67,20 @@ class NextMealApp extends PolymerElement {
         }
 
         @media only screen and (min-width: 640px) {
-          .location .tag {
+          .location,
+          .filter {
             width: 40%;
           }
         }
       </style>
 
-      <iron-pages id="pages" selected="{{stage}}">
-        <paper-card class="location">
+      <iron-pages
+        attr-for-selected="step-name"
+        class="pages"
+        id="pages"
+        selected="location"
+      >
+        <paper-card class="location" step-name="location">
           <div class="card-content">
             <h2 class="location__title">Discover your Next Meal</h2>
             <paper-input-place
@@ -99,9 +109,9 @@ class NextMealApp extends PolymerElement {
           </div>
         </paper-card>
 
-        <paper-card class="tag">
+        <paper-card class="filter" step-name="filters">
           <div class="card-content">
-            <h2 class="tag__title">Choose Tags</h2>
+            <h2 class="filter__title">Choose filters</h2>
           </div>
         </paper-card>
       </iron-pages>
@@ -116,10 +126,6 @@ class NextMealApp extends PolymerElement {
       noLocationSet: {
         type: Boolean,
         value: true,
-      },
-      stage: {
-        type: Number,
-        value: 0,
       },
       user: {
         type: Object,
@@ -140,12 +146,9 @@ class NextMealApp extends PolymerElement {
    * Handle Location Submit
    */
   _handleLocationSubmit() {
-    if (this.$.rememberMe.checked || !this.user.location) {
-      localStorage.setItem('user', JSON.stringify(this.user));
-    }
+    this._updateUser(this.user);
 
-    this.stage = 1;
-    this.$.pages.selectIndex(this.stage);
+    this.$.pages.select('filters');
   }
 
   /**
@@ -160,6 +163,18 @@ class NextMealApp extends PolymerElement {
 
     this.noLocationSet = false;
     this.user = {location: this.location.place_id};
+  }
+
+  /**
+   * Update User
+   * @param {Object} user
+   */
+  _updateUser(user) {
+    if (!this.$.rememberMe.checked) {
+      return;
+    }
+
+    localStorage.setItem('user', JSON.stringify(user));
   }
 }
 
