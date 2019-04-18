@@ -11,6 +11,7 @@ import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/paper-card/paper-card';
 import '@polymer/paper-checkbox/paper-checkbox';
 import '@polymer/paper-input/paper-input';
+import '@polymer/paper-slider/paper-slider';
 import '@polymer/paper-toast/paper-toast';
 
 import 'paper-input-place';
@@ -28,8 +29,11 @@ class NextMealApp extends PolymerElement {
           background-position: center;
           background-repeat: no-repeat;
           background-size: cover;
-          border: 8px solid #ffecb3;
+          border: 8px solid var(--app-primary-color);
           @apply --layout-fit;
+          --app-primary-color: #ffecb3;
+          --app-secondary-color: #cbba83;
+          --app-tertiary-color: #8d8d8d;
         }
 
         .pages {
@@ -45,14 +49,41 @@ class NextMealApp extends PolymerElement {
           width: calc(100% - 16px);
         }
 
+        .filter__header {
+          @apply --layout-horizontal;
+          @apply --layout-justified;
+        }
+
+        .filter__body {
+          margin: 10px 0;
+        }
+
         .title {
-          color: #8d8d8d;
+          color: var(--app-tertiary-color);
           margin: 8px 0;
+        }
+
+        .subtitle {
+          color: var(--app-tertiary-color);
+          margin: 8px 0;
+        }
+
+        .tags,
+        .radius {
+          margin: 32px 0;
+        }
+
+        .radius__slider {
+          width: 100%;
+          --paper-slider-active-color: var(--app-tertiary-color);
+          --paper-slider-container-color: var(--app-secondary-color);
+          --paper-slider-knob-color: var(--app-tertiary-color);
+          --paper-slider-pin-color: var(--app-tertiary-color);
         }
 
         .location__input {
           display: block;
-          --paper-input-container-focus-color: #cbba83;
+          --paper-input-container-focus-color: var(--app-secondary-color);
           --paper-input-place-postfix-icon-mixin: {
             display: none;
           }
@@ -66,7 +97,7 @@ class NextMealApp extends PolymerElement {
 
         .location__checkbox {
           margin-top: 8px;
-          --paper-checkbox-checked-color: #cbba83;
+          --paper-checkbox-checked-color: var(--app-secondary-color);
         }
 
         .button--next {
@@ -79,12 +110,17 @@ class NextMealApp extends PolymerElement {
 
         .toast {
           height: 64px;
-          --paper-toast-background-color: #ffffe5;
+          overflow-x: scroll;
+          --paper-toast-background-color: var(--app-primary-color);
           @apply --layout-horizontal;
         }
 
         .chip {
-          margin-right: 8px;
+          margin: 8px 0 0 0;
+        }
+
+        .chip--toast {
+          margin: 0 8px 0 0;
           @apply --layout-horizontal;
         }
 
@@ -138,24 +174,43 @@ class NextMealApp extends PolymerElement {
 
         <paper-card class="filter" step-name="filters">
           <div class="card-content">
-            <paper-icon-button
-              class="button button--back"
-              icon="icons:arrow-back"
-              on-tap="_handleFilterBack"
-            ></paper-icon-button>
-            <p>Searching around [[user.search]]</p>
-            <h2 class="title">Choose filters</h2>
-            <dom-repeat items="{{chips}}">
-              <template>
-                <paper-chip
-                  data-chip$="{{item}}"
-                  on-tap="_handleChipSelection"
-                  selectable
-                >
-                  {{item}}
-                </paper-chip>
-              </template>
-            </dom-repeat>
+            <div class="filter__header">
+              <paper-icon-button
+                class="button button--back"
+                icon="icons:arrow-back"
+                on-tap="_handleFilterBack"
+              ></paper-icon-button>
+              <p class="filter__body">Searching near [[user.search]]</p>
+            </div>
+            <div class="tags">
+              <h3 class="subtitle">Tags</h3>
+              <dom-repeat items="{{chips}}">
+                <template>
+                  <paper-chip
+                    class="chip"
+                    data-chip$="{{item}}"
+                    on-tap="_handleChipSelection"
+                    selectable
+                  >
+                    {{item}}
+                  </paper-chip>
+                </template>
+              </dom-repeat>
+            </div>
+
+            <div class="radius">
+              <h3 class="subtitle">Search Radius</h3>
+              <paper-slider
+                class="radius__slider"
+                id="ratings"
+                min="10"
+                max="100"
+                pin
+                snaps
+                step="5"
+                value="50"
+              ></paper-slider>
+            </div>
           </div>
         </paper-card>
       </iron-pages>
@@ -163,7 +218,7 @@ class NextMealApp extends PolymerElement {
       <paper-toast class="fit-bottom toast" duration="0" id="toast">
         <dom-repeat items="{{filters.chips}}">
           <template is="dom-repeat">
-            <paper-chip class="chip" data-chip$="{{item}}">
+            <paper-chip class="chip chip--toast" data-chip$="{{item}}">
               <div>{{item}}</div>
               <paper-icon-button
                 class="chip__button"
