@@ -27,7 +27,7 @@ class NextMealLocation extends PolymerElement {
 
         .location {
           background: #ffffe5;
-          width: calc(100% - 16px);
+          width: 100%;
         }
 
         .location__input {
@@ -91,8 +91,8 @@ class NextMealLocation extends PolymerElement {
         value: true,
       },
       user: {
+        notify: true,
         type: Object,
-        value: () => JSON.parse(localStorage.getItem('user')),
       },
     };
   }

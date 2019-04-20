@@ -3,8 +3,6 @@ import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/iron-pages/iron-pages';
 
-import '@polymer/paper-toast/paper-toast';
-
 import './src/nm-filter';
 import './src/nm-location';
 
@@ -34,13 +32,6 @@ class NextMealApp extends PolymerElement {
           @apply --layout-center-justified;
           @apply --layout-vertical;
         }
-
-        .toast {
-          height: 64px;
-          overflow-x: scroll;
-          --paper-toast-background-color: var(--app-primary-color);
-          @apply --layout-horizontal;
-        }
       </style>
 
       <iron-pages
@@ -49,29 +40,16 @@ class NextMealApp extends PolymerElement {
         id="pages"
         selected="location"
       >
-        <nm-filter step-name="filter"></nm-filter>
-        <nm-location step-name="location"></nm-location>
+        <nm-filter step-name="filter" user="{{user}}"></nm-filter>
+        <nm-location step-name="location" user="{{user}}"></nm-location>
       </iron-pages>
-
-      <paper-toast class="fit-bottom toast" duration="0" id="toast">
-        <dom-repeat items="{{filters.chips}}">
-          <template is="dom-repeat">
-            <paper-chip class="chip chip--toast" data-chip$="{{item}}">
-              <div>{{item}}</div>
-              <paper-icon-button
-                class="chip__button"
-                icon="icons:close"
-                on-tap="_removeChipItem"
-              ></paper-icon-button>
-            </paper-chip>
-          </template>
-        </dom-repeat>
-      </paper-toast>
     `;
   }
+
   static get properties() {
     return {
       user: {
+        notify: true,
         type: Object,
         value: () => JSON.parse(localStorage.getItem('user')),
       },

@@ -6,9 +6,10 @@ import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/iron-icons/iron-icons';
 
-import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/paper-card/paper-card';
+import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/paper-slider/paper-slider';
+import '@polymer/paper-toast/paper-toast';
 
 import './shared-style';
 /**
@@ -25,7 +26,7 @@ class NextMealFilter extends PolymerElement {
 
         .filter {
           background: #ffffe5;
-          width: calc(100% - 16px);
+          width: 100%;
         }
 
         .filter__header {
@@ -64,11 +65,12 @@ class NextMealFilter extends PolymerElement {
           left: 8px;
         }
 
-        /*@media only screen and (min-width: 640px) {
-          .filter {
-            width: 40%;
-          }
-        }*/
+        .toast {
+          height: 64px;
+          overflow-x: scroll;
+          --paper-toast-background-color: var(--app-primary-color);
+          @apply --layout-horizontal;
+        }
       </style>
 
       <paper-card class="filter" step-name="filters">
@@ -112,6 +114,21 @@ class NextMealFilter extends PolymerElement {
           </div>
         </div>
       </paper-card>
+
+      <paper-toast class="fit-bottom toast" duration="0" id="toast">
+        <dom-repeat items="{{filters.chips}}">
+          <template is="dom-repeat">
+            <paper-chip class="chip chip--toast" data-chip$="{{item}}">
+              <div>{{item}}</div>
+              <paper-icon-button
+                class="chip__button"
+                icon="icons:close"
+                on-tap="_removeChipItem"
+              ></paper-icon-button>
+            </paper-chip>
+          </template>
+        </dom-repeat>
+      </paper-toast>
     `;
   }
   static get properties() {
@@ -134,8 +151,8 @@ class NextMealFilter extends PolymerElement {
         },
       },
       user: {
+        notify: true,
         type: Object,
-        value: () => JSON.parse(localStorage.getItem('user')),
       },
     };
   }
@@ -153,7 +170,7 @@ class NextMealFilter extends PolymerElement {
 
     this.push('filters.chips', chip);
 
-    this.app.$.toast.open();
+    this.$.toast.open();
   }
 
   /**
@@ -177,7 +194,7 @@ class NextMealFilter extends PolymerElement {
     this.splice('filters.chips', this.filters.chips.indexOf(chip), 1);
 
     if (this.filters.chips.length === 0) {
-      this.app.$.toast.close();
+      this.$.toast.close();
     }
   }
 }
