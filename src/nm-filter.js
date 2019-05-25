@@ -1,4 +1,4 @@
-import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import {html, PolymerElement} from '@polymer/polymer/polymer-element';
 
 import '@collaborne/paper-chip/paper-chip';
 

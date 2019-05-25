@@ -1,7 +1,22 @@
 {
-  "name": "next-meal",
-  "short_name": "next-meal",
-  "description": "next meal helps you decide on where to eat next.",
-  "start_url": "/",
-  "display": "standalone"
-}
+    "background_color": "#ffecb3",
+    "description": "Next Meal helps you decide on where to eat next.",
+    "display": "standalone",
+    "icons": [
+      {
+          "src": "images/manifest/android-chrome-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+      },
+      {
+          "src": "images/manifest/android-chrome-512x512.png",
+          "sizes": "512x512",
+          "type": "image/png"
+      }
+  ],
+    "name": "next-meal",
+    "short_name": "next-meal",
+    "start_url": "/",
+    "theme_color": "#ffecb3"
+  }
+  
