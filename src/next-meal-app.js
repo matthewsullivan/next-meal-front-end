@@ -1,10 +1,10 @@
-import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
+import {html, PolymerElement} from '@polymer/polymer/polymer-element';
 
 import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/iron-pages/iron-pages';
 
-import './src/nm-filter';
-import './src/nm-location';
+import './nm-filter';
+import './nm-location';
 
 /**
  * @customElement

@@ -1,8 +1,69 @@
 {
-  "npm": true,
+  "builds": [
+    {
+      "addServiceWorker": true,
+      "basePath": true,
+      "browserCapabilities": ["es2015", "modules"],
+      "bundle": true,
+      "css": {
+        "minify": true
+      },
+      "html": {
+        "minify": true
+      },
+      "js": {
+        "minify": true
+      },
+      "name": "esm-bundled"
+    },
+    {
+      "addServiceWorker": true,
+      "basePath": true,
+      "browserCapabilities": ["es2015"],
+      "bundle": true,
+      "css": {
+        "minify": true
+      },
+      "html": {
+        "minify": true
+      },
+      "js": {
+        "minify": true,
+        "transformModulesToAmd": true
+      },
+      "name": "es6-bundled"
+    },
+    {
+      "addServiceWorker": true,
+      "basePath": true,
+      "bundle": true,
+      "css": {
+        "minify": true
+      },
+      "html": {
+        "minify": true
+      },
+      "js": {
+        "compile": true,
+        "minify": true,
+        "transformModulesToAmd": true
+      },
+      "name": "es5-bundled"
+    }
+  ],
+  "entrypoint": "index.html",
+  "extraDependencies": [
+    "manifest.json",
+    "!node_modules/@webcomponents/webcomponentsjs/gulpfile.js",
+    "node_modules/@webcomponents/webcomponentsjs/*.js",
+    "node_modules/@webcomponents/webcomponentsjs/bundles/*.js",
+    "node_modules/web-animations-js/*.js"
+  ],
   "lint": {
-    "rules": [
-      "polymer-3"
-    ]
-  }
+    "rules": ["polymer-3"]
+  },
+  "moduleResolution": "node",
+  "npm": true,
+  "shell": "src/next-meal-app.js",
+  "sources": ["images/**/*", "package.json", "src/**/*"]
 }

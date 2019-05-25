@@ -5,22 +5,45 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
     <title>next-meal</title>
-    <meta name="description" content="next meal helps you decide on where to eat next.">
+    <meta name="description" content="Next Meal helps you decide on where to eat next.">
 
-    <link rel="apple-touch-icon" sizes="180x180" href="./images/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon/favicon-16x16.png">
-    <link rel="manifest" href="./images/favicon/manifest.json">
-    <link rel="mask-icon" href="./images/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <base href="/">
+
+    <link href="manifest.json" rel="manifest">
+
+    <meta content="yes" name="mobile-web-app-capable">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+    <link rel="mask-icon" href="images/favicon/safari-pinned-tab.svg" color="#5bbad5">
     
     <meta name="theme-color" content="#ffffff">
 
-    <!-- See https://goo.gl/OOhYW5 -->
-    <link rel="manifest" href="/manifest.json">
+    <script>
+      window.NextMealGlobals = {
+        config: {
+          api: {
+            origin: 'http://127.0.0.1:3000',
+            path: 'api/v1',
+          },
+        },
+        rootPath: '/',
+      };
 
-    <script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('service-worker.js', {
+            scope: NextMealGlobals.rootPath,
+          });
+        });
+      }
+    </script>
 
-    <script type="module" src="/src/next-meal-app/next-meal-app.js" crossorigin></script>
+    <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
+
+    <script type="module" src="./src/next-meal-app.js"></script>
   </head>
   <style>
     .pac-container {
@@ -60,8 +83,6 @@
       color: #000;
       font-size: 14px;
     }
-   
-    
   </style>
   <body>
     <next-meal-app></next-meal-app>
