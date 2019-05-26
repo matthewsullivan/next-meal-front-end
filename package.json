@@ -1,7 +1,7 @@
 {
   "author": "Dev & Barrel",
   "bugs": {
-    "url": "https://github.com/matthewsullivan/next-meal/issues"
+    "url": "https://github.com/matthewsullivan/next-meal-front-end/issues"
   },
   "dependencies": {
     "@collaborne/paper-chip": "^3.0.5",
@@ -56,14 +56,14 @@
   "directories": {
     "test": "test"
   },
-  "homepage": "https://github.com/matthewsullivan/next-meal#readme",
+  "homepage": "https://github.com/matthewsullivan/next-meal-front-end#readme",
   "keywords": [],
   "license": "MIT",
   "main": "server.js",
   "name": "next-meal",
   "repository": {
     "type": "git",
-    "url": "https://github.com/matthewsullivan/next-meal.git"
+    "url": "https://github.com/matthewsullivan/next-meal-front-end.git"
   },
   "resolutions": {
     "inherits": "2.0.3",
