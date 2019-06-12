@@ -25,6 +25,8 @@ class NextMealPlace extends PolymerElement {
 
         .places {
           background: #ffffe5;
+          max-height: 85%;
+          overflow: scroll;
           width: 100%;
         }
 
@@ -55,6 +57,10 @@ class NextMealPlace extends PolymerElement {
             ></paper-icon-button>
             <p class="places__body">Searching near [[user.search]]</p>
           </div>
+
+          <template as="place" is="dom-repeat" items="{{places}}">
+            <p>[[place.name]]</p>
+          </template>
         </div>
       </paper-card>
 
@@ -102,8 +108,6 @@ class NextMealPlace extends PolymerElement {
   requestNearbyPlaces(filters) {
     this.filters = Object.assign(this.user, filters);
 
-    console.log(this.filters);
-
     this.$.ajax.generateRequest();
   }
 
@@ -121,7 +125,7 @@ class NextMealPlace extends PolymerElement {
   _handleResponse(event) {
     const response = event.detail.response;
 
-    console.log(response);
+    this.notifyPath('places', response);
   }
 }
 
