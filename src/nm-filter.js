@@ -6,6 +6,7 @@ import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/iron-icons/iron-icons';
 
+import '@polymer/paper-button/paper-button';
 import '@polymer/paper-card/paper-card';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/paper-slider/paper-slider';
@@ -65,6 +66,14 @@ class NextMealFilter extends PolymerElement {
           left: 8px;
         }
 
+        .submit {
+          background: var(--app-secondary-color);
+          border-radius: 0;
+          color: #fff;
+          margin-left: 0;
+          width: 100%;
+        }
+
         .toast {
           height: 64px;
           overflow-x: scroll;
@@ -106,17 +115,22 @@ class NextMealFilter extends PolymerElement {
               id="ratings"
               min="10"
               max="100"
+              on-change="_handleRadiusChange"
               pin
               snaps
               step="5"
               value="50"
             ></paper-slider>
           </div>
+
+          <paper-button class="submit" on-tap="_handleSubmit">
+            GO
+          </paper-button>
         </div>
       </paper-card>
 
       <paper-toast class="fit-bottom toast" duration="0" id="toast">
-        <dom-repeat items="{{filters.chips}}">
+        <dom-repeat items="{{filters.tags}}">
           <template is="dom-repeat">
             <paper-chip class="chip chip--toast" data-chip$="{{item}}">
               <div>{{item}}</div>
@@ -145,8 +159,8 @@ class NextMealFilter extends PolymerElement {
         type: Object,
         value: () => {
           return {
-            chips: [],
-            radius: 0,
+            tags: [],
+            radius: 50,
           };
         },
       },
@@ -164,11 +178,11 @@ class NextMealFilter extends PolymerElement {
   _handleChipSelection(event) {
     const chip = event.target.getAttribute('data-chip');
 
-    if (this.filters.chips.includes(chip)) {
+    if (this.filters.tags.includes(chip)) {
       return;
     }
 
-    this.push('filters.chips', chip);
+    this.push('filters.tags', chip);
 
     this.$.toast.open();
   }
@@ -181,19 +195,38 @@ class NextMealFilter extends PolymerElement {
   }
 
   /**
+   * Handle Radius Change
+   * @param {Object} event
+   */
+  _handleRadiusChange(event) {
+    this.filters.radius = event.target.value;
+  }
+
+  /**
+   * Handle Submit
+   */
+  _handleSubmit() {
+    const place = this.app.$.pages.querySelector('nm-place');
+
+    place.requestNearbyPlaces(this.filters);
+
+    this.app.$.pages.select('place');
+  }
+
+  /**
    * Remove Chip Item
    * @param {Object} event
    */
   _removeChipItem(event) {
     const chip = event.target.parentElement.getAttribute('data-chip');
 
-    if (!this.filters.chips.includes(chip)) {
+    if (!this.filters.tags.includes(chip)) {
       return;
     }
 
-    this.splice('filters.chips', this.filters.chips.indexOf(chip), 1);
+    this.splice('filters.tags', this.filters.tags.indexOf(chip), 1);
 
-    if (this.filters.chips.length === 0) {
+    if (this.filters.tags.length === 0) {
       this.$.toast.close();
     }
   }

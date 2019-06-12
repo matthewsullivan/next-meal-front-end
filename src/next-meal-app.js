@@ -5,6 +5,7 @@ import '@polymer/iron-pages/iron-pages';
 
 import './nm-filter';
 import './nm-location';
+import './nm-place';
 
 /**
  * @customElement
@@ -42,6 +43,7 @@ class NextMealApp extends PolymerElement {
       >
         <nm-filter step-name="filter" user="{{user}}"></nm-filter>
         <nm-location step-name="location" user="{{user}}"></nm-location>
+        <nm-place step-name="place" user="{{user}}"></nm-place>
       </iron-pages>
     `;
   }
