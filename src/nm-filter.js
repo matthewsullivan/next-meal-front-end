@@ -114,12 +114,12 @@ class NextMealFilter extends PolymerElement {
               class="radius__slider"
               id="ratings"
               min="10"
-              max="100"
+              max="50"
               on-change="_handleRadiusChange"
               pin
               snaps
-              step="5"
-              value="50"
+              step="4"
+              value="25"
             ></paper-slider>
           </div>
 
