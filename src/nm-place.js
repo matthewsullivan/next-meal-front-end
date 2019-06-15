@@ -25,9 +25,8 @@ class NextMealPlace extends PolymerElement {
 
         .places {
           background: #ffffe5;
-          max-height: 80%;
+          max-height: 88vh;
           overflow: scroll;
-          top: 10%;
           width: 100%;
         }
 
