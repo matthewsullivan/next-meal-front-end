@@ -23,11 +23,15 @@ class NextMealLocation extends PolymerElement {
       <style include="shared-style">
         :host {
           display: block;
+          @apply --layout-center;
+          @apply --layout-fit;
+          @apply --layout-center-justified;
+          @apply --layout-vertical;
         }
 
         .location {
-          background: #ffffe5;
-          width: 100%;
+          background: var(--app-complementary-color);
+          border-radius: 0;
         }
 
         .location__input {
@@ -54,7 +58,7 @@ class NextMealLocation extends PolymerElement {
         <div class="card-content">
           <h2 class="title">Discover your Next Meal</h2>
           <paper-input-place
-            api-key="AIzaSyDIzP6lts91F_1atFp9Kq0ygMDiGE8cI38"
+            api-key="[[googleApiKey]]"
             class="location__input"
             hide-error
             hide-icon
@@ -81,6 +85,10 @@ class NextMealLocation extends PolymerElement {
       app: {
         type: Object,
         value: () => document.querySelector('next-meal-app'),
+      },
+      googleApiKey: {
+        type: Object,
+        value: NextMealGlobals.googleApiKey,
       },
       location: {
         type: Object,

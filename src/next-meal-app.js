@@ -21,26 +21,18 @@ class NextMealApp extends PolymerElement {
           background-repeat: no-repeat;
           background-size: cover;
           border: 8px solid var(--app-primary-color);
-          @apply --layout-fit;
+          box-sizing: border-box;
+          height: 100%;
+          overflow: scroll;
+          @apply --layout-fixed-top;
+          --app-complementary-color: #ffffe5;
           --app-primary-color: #ffecb3;
           --app-secondary-color: #cbba83;
           --app-tertiary-color: #8d8d8d;
         }
-
-        .pages {
-          @apply --layout-center;
-          @apply --layout-fit;
-          @apply --layout-center-justified;
-          @apply --layout-vertical;
-        }
       </style>
 
-      <iron-pages
-        attr-for-selected="step-name"
-        class="pages"
-        id="pages"
-        selected="location"
-      >
+      <iron-pages attr-for-selected="step-name" id="pages" selected="location">
         <nm-filter step-name="filter" user="{{user}}"></nm-filter>
         <nm-location step-name="location" user="{{user}}"></nm-location>
         <nm-place step-name="place" user="{{user}}"></nm-place>

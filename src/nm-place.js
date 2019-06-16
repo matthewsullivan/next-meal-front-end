@@ -1,6 +1,11 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element';
 
-import '@polymer/iron-ajax/iron-ajax.js';
+import '@polymer/app-layout/app-header/app-header';
+import '@polymer/app-layout/app-header-layout/app-header-layout';
+import '@polymer/app-layout/app-scroll-effects/app-scroll-effects';
+import '@polymer/app-layout/app-toolbar/app-toolbar';
+
+import '@polymer/iron-ajax/iron-ajax';
 import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/iron-icons/iron-icons';
@@ -23,46 +28,75 @@ class NextMealPlace extends PolymerElement {
           display: block;
         }
 
+        .header {
+          background: var(--app-primary-color);
+        }
+
         .places {
-          background: #ffffe5;
-          max-height: 88vh;
-          overflow: scroll;
+          box-sizing: border-box;
+          padding: 0 8px;
           width: 100%;
         }
 
-        .places__header {
+        .preview {
           @apply --layout-horizontal;
-          @apply --layout-justified;
+          @apply --layout-wrap;
         }
 
-        .places__body {
-          margin: 10px 0;
+        .preview__place {
+          background: var(--app-complementary-color);
+          border-radius: 0;
+          width: 33%;
+          margin-bottom: 8px;
+          --paper-card-header-image: {
+            height: 200px;
+          }
         }
 
-        .toast {
-          height: 64px;
-          overflow-x: scroll;
-          --paper-toast-background-color: var(--app-primary-color);
-          @apply --layout-horizontal;
+        .back {
+          bottom: 24px;
+          color: #000;
+          left: 24px;
+          position: fixed;
+          --paper-fab-background: var(--app-primary-color);
+          --paper-fab-keyboard-focus-background: var(--app-seconadary-color);
         }
       </style>
 
-      <paper-card class="places" step-name="place">
-        <div class="card-content">
-          <div class="places__header">
+      <app-header-layout>
+        <app-header class="header" slot="header">
+          <app-toolbar>
             <paper-icon-button
               class="button button--back"
               icon="icons:arrow-back"
               on-tap="_handlePlaceBack"
             ></paper-icon-button>
-            <p class="places__body">Searching near [[user.search]]</p>
-          </div>
+            <div main-title>
+              <p>Searching near [[user.search]]</p>
+            </div>
+          </app-toolbar>
+        </app-header>
 
-          <template as="place" is="dom-repeat" items="{{places}}">
-            <p>[[place.name]]</p>
+        <div class="places" step-name="place">
+          <template
+            as="place"
+            class="preview"
+            is="dom-repeat"
+            items="{{places}}"
+          >
+            <paper-card
+              alt="[[place.name]]"
+              class="preview__place"
+              image="[[_getBanner(place)]]"
+            >
+              <div class="card-content">
+                <h2>[[place.name]]</h2>
+                <p>[[place.vicinity]]</p>
+              </div>
+            </paper-card>
           </template>
         </div>
-      </paper-card>
+      </app-header-layout>
 
       <paper-toast
         class="fit-bottom toast"
@@ -90,6 +124,10 @@ class NextMealPlace extends PolymerElement {
         type: Object,
         value: () => document.querySelector('next-meal-app'),
       },
+      googleApiKey: {
+        type: Object,
+        value: NextMealGlobals.googleApiKey,
+      },
       filters: {
         notify: true,
         type: Object,
@@ -112,6 +150,22 @@ class NextMealPlace extends PolymerElement {
   }
 
   /**
+   * Get Banner
+   * @param {Object} place
+   * @return {String}
+   */
+  _getBanner(place) {
+    const dimensions = 'maxwidth=614';
+    const path = 'https://maps.googleapis.com/maps/api/place/photo';
+    const reference = place.photos[0].photo_reference;
+    const url = `${path}?${dimensions}&photoreference=${reference}&key=${
+      this.googleApiKey
+    }`;
+
+    return url;
+  }
+
+  /**
    * Handle Place Back
    */
   _handlePlaceBack() {
@@ -124,6 +178,8 @@ class NextMealPlace extends PolymerElement {
    */
   _handleResponse(event) {
     const response = event.detail.response;
+
+    console.log(response);
 
     this.notifyPath('places', response);
   }
