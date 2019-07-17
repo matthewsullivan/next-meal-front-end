@@ -56,6 +56,10 @@ class NextMealPlace extends PolymerElement {
           }
         }
 
+        .preview__content {
+          padding: 8px;
+        }
+
         .preview__title {
           font-size: 16px;
           text-overflow: ellipsis;
@@ -101,7 +105,7 @@ class NextMealPlace extends PolymerElement {
               class="preview__place"
               image="[[_getBanner(place)]]"
             >
-              <div class="card-content">
+              <div class="preview__content">
                 <h2 class="preview__title">[[place.name]]</h2>
                 <p>[[place.vicinity]]</p>
               </div>
@@ -185,13 +189,11 @@ class NextMealPlace extends PolymerElement {
   }
 
   /**
-   * Handle Place Back
+   * Handle Place Response
    * @param {Object} event
    */
   _handleResponse(event) {
     const response = event.detail.response;
-
-    console.log(response);
 
     this.notifyPath('places', response);
   }
