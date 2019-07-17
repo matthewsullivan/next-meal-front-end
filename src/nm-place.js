@@ -32,9 +32,14 @@ class NextMealPlace extends PolymerElement {
           background: var(--app-primary-color);
         }
 
+        .header__title {
+          font-family: Roboto, sans-serif;
+          font-size: 16px;
+        }
+
         .places {
           box-sizing: border-box;
-          padding: 0 8px;
+          padding: 8px;
           width: 100%;
         }
 
@@ -63,40 +68,34 @@ class NextMealPlace extends PolymerElement {
         }
       </style>
 
-      <app-header-layout>
-        <app-header class="header" slot="header">
-          <app-toolbar>
-            <paper-icon-button
-              class="button button--back"
-              icon="icons:arrow-back"
-              on-tap="_handlePlaceBack"
-            ></paper-icon-button>
-            <div main-title>
-              <p>Searching near [[user.search]]</p>
-            </div>
-          </app-toolbar>
-        </app-header>
+      <app-header class="header">
+        <app-toolbar>
+          <paper-icon-button
+            class="button button--back"
+            icon="icons:arrow-back"
+            on-tap="_handlePlaceBack"
+          ></paper-icon-button>
 
-        <div class="places" step-name="place">
-          <template
-            as="place"
-            class="preview"
-            is="dom-repeat"
-            items="{{places}}"
+          <div class="header__title" main-title>
+            Searching near [[user.search]]
+          </div>
+        </app-toolbar>
+      </app-header>
+
+      <div class="places" step-name="place">
+        <template as="place" class="preview" is="dom-repeat" items="{{places}}">
+          <paper-card
+            alt="[[place.name]]"
+            class="preview__place"
+            image="[[_getBanner(place)]]"
           >
-            <paper-card
-              alt="[[place.name]]"
-              class="preview__place"
-              image="[[_getBanner(place)]]"
-            >
-              <div class="card-content">
-                <h2>[[place.name]]</h2>
-                <p>[[place.vicinity]]</p>
-              </div>
-            </paper-card>
-          </template>
-        </div>
-      </app-header-layout>
+            <div class="card-content">
+              <h2>[[place.name]]</h2>
+              <p>[[place.vicinity]]</p>
+            </div>
+          </paper-card>
+        </template>
+      </div>
 
       <paper-toast
         class="fit-bottom toast"
