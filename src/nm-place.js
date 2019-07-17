@@ -1,8 +1,6 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element';
 
 import '@polymer/app-layout/app-header/app-header';
-import '@polymer/app-layout/app-header-layout/app-header-layout';
-import '@polymer/app-layout/app-scroll-effects/app-scroll-effects';
 import '@polymer/app-layout/app-toolbar/app-toolbar';
 
 import '@polymer/iron-ajax/iron-ajax';
@@ -38,12 +36,11 @@ class NextMealPlace extends PolymerElement {
         }
 
         .places {
-          box-sizing: border-box;
           padding: 8px;
-          width: 100%;
         }
 
         .preview {
+          @apply --layout-justified;
           @apply --layout-horizontal;
           @apply --layout-wrap;
         }
@@ -51,11 +48,19 @@ class NextMealPlace extends PolymerElement {
         .preview__place {
           background: var(--app-complementary-color);
           border-radius: 0;
-          width: 33%;
+          height: 336px;
+          width: 100%;
           margin-bottom: 8px;
           --paper-card-header-image: {
             height: 200px;
           }
+        }
+
+        .preview__title {
+          font-size: 16px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
         }
 
         .back {
@@ -65,6 +70,12 @@ class NextMealPlace extends PolymerElement {
           position: fixed;
           --paper-fab-background: var(--app-primary-color);
           --paper-fab-keyboard-focus-background: var(--app-seconadary-color);
+        }
+
+        @media only screen and (min-width: 640px) {
+          .preview__place {
+            width: 33%;
+          }
         }
       </style>
 
@@ -83,18 +94,20 @@ class NextMealPlace extends PolymerElement {
       </app-header>
 
       <div class="places" step-name="place">
-        <template as="place" class="preview" is="dom-repeat" items="{{places}}">
-          <paper-card
-            alt="[[place.name]]"
-            class="preview__place"
-            image="[[_getBanner(place)]]"
-          >
-            <div class="card-content">
-              <h2>[[place.name]]</h2>
-              <p>[[place.vicinity]]</p>
-            </div>
-          </paper-card>
-        </template>
+        <div class="preview">
+          <template as="place" is="dom-repeat" items="{{places}}">
+            <paper-card
+              alt="[[place.name]]"
+              class="preview__place"
+              image="[[_getBanner(place)]]"
+            >
+              <div class="card-content">
+                <h2 class="preview__title">[[place.name]]</h2>
+                <p>[[place.vicinity]]</p>
+              </div>
+            </paper-card>
+          </template>
+        </div>
       </div>
 
       <paper-toast
