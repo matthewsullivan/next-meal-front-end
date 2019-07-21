@@ -23,11 +23,15 @@ class NextMealFilter extends PolymerElement {
       <style include="shared-style">
         :host {
           display: block;
+          @apply --layout-center;
+          @apply --layout-fit;
+          @apply --layout-center-justified;
+          @apply --layout-vertical;
         }
 
         .filter {
-          background: #ffffe5;
-          width: 100%;
+          background: var(--app-complementary-color);
+          border-radius: 0;
         }
 
         .filter__header {
@@ -72,13 +76,6 @@ class NextMealFilter extends PolymerElement {
           color: #fff;
           margin-left: 0;
           width: 100%;
-        }
-
-        .toast {
-          height: 64px;
-          overflow-x: scroll;
-          --paper-toast-background-color: var(--app-primary-color);
-          @apply --layout-horizontal;
         }
       </style>
 
