@@ -1,6 +1,9 @@
 import {html, PolymerElement} from '@polymer/polymer/polymer-element';
 
-import '@polymer/iron-ajax/iron-ajax.js';
+import '@polymer/app-layout/app-header/app-header';
+import '@polymer/app-layout/app-toolbar/app-toolbar';
+
+import '@polymer/iron-ajax/iron-ajax';
 import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/iron-icons/iron-icons';
@@ -23,47 +26,93 @@ class NextMealPlace extends PolymerElement {
           display: block;
         }
 
+        .header {
+          background: var(--app-primary-color);
+        }
+
+        .header__title {
+          font-family: Roboto, sans-serif;
+          font-size: 16px;
+        }
+
         .places {
-          background: #ffffe5;
-          max-height: 80%;
-          overflow: scroll;
-          top: 10%;
-          width: 100%;
+          padding: 8px;
         }
 
-        .places__header {
-          @apply --layout-horizontal;
+        .preview {
           @apply --layout-justified;
-        }
-
-        .places__body {
-          margin: 10px 0;
-        }
-
-        .toast {
-          height: 64px;
-          overflow-x: scroll;
-          --paper-toast-background-color: var(--app-primary-color);
           @apply --layout-horizontal;
+          @apply --layout-wrap;
+        }
+
+        .preview__place {
+          background: var(--app-complementary-color);
+          border-radius: 0;
+          height: 336px;
+          width: 100%;
+          margin-bottom: 8px;
+          --paper-card-header-image: {
+            height: 200px;
+          }
+        }
+
+        .preview__content {
+          padding: 8px;
+        }
+
+        .preview__title {
+          font-size: 16px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+
+        .back {
+          bottom: 24px;
+          color: #000;
+          left: 24px;
+          position: fixed;
+          --paper-fab-background: var(--app-primary-color);
+          --paper-fab-keyboard-focus-background: var(--app-seconadary-color);
+        }
+
+        @media only screen and (min-width: 640px) {
+          .preview__place {
+            width: 33%;
+          }
         }
       </style>
 
-      <paper-card class="places" step-name="place">
-        <div class="card-content">
-          <div class="places__header">
-            <paper-icon-button
-              class="button button--back"
-              icon="icons:arrow-back"
-              on-tap="_handlePlaceBack"
-            ></paper-icon-button>
-            <p class="places__body">Searching near [[user.search]]</p>
-          </div>
+      <app-header class="header">
+        <app-toolbar>
+          <paper-icon-button
+            class="button button--back"
+            icon="icons:arrow-back"
+            on-tap="_handlePlaceBack"
+          ></paper-icon-button>
 
+          <div class="header__title" main-title>
+            Searching near [[user.search]]
+          </div>
+        </app-toolbar>
+      </app-header>
+
+      <div class="places" step-name="place">
+        <div class="preview">
           <template as="place" is="dom-repeat" items="{{places}}">
-            <p>[[place.name]]</p>
+            <paper-card
+              alt="[[place.name]]"
+              class="preview__place"
+              image="[[_getBanner(place)]]"
+            >
+              <div class="preview__content">
+                <h2 class="preview__title">[[place.name]]</h2>
+                <p>[[place.vicinity]]</p>
+              </div>
+            </paper-card>
           </template>
         </div>
-      </paper-card>
+      </div>
 
       <paper-toast
         class="fit-bottom toast"
@@ -91,6 +140,10 @@ class NextMealPlace extends PolymerElement {
         type: Object,
         value: () => document.querySelector('next-meal-app'),
       },
+      googleApiKey: {
+        type: Object,
+        value: NextMealGlobals.googleApiKey,
+      },
       filters: {
         notify: true,
         type: Object,
@@ -113,6 +166,22 @@ class NextMealPlace extends PolymerElement {
   }
 
   /**
+   * Get Banner
+   * @param {Object} place
+   * @return {String}
+   */
+  _getBanner(place) {
+    const dimensions = 'maxwidth=614';
+    const path = 'https://maps.googleapis.com/maps/api/place/photo';
+    const reference = place.photos[0].photo_reference;
+    const url = `${path}?${dimensions}&photoreference=${reference}&key=${
+      this.googleApiKey
+    }`;
+
+    return url;
+  }
+
+  /**
    * Handle Place Back
    */
   _handlePlaceBack() {
@@ -120,7 +189,7 @@ class NextMealPlace extends PolymerElement {
   }
 
   /**
-   * Handle Place Back
+   * Handle Place Response
    * @param {Object} event
    */
   _handleResponse(event) {
